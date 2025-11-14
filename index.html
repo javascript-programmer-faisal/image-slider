@@ -6,18 +6,19 @@
     <title>Document</title>
     <style>
 
-
 .slider-container {
-  width: 100%;
-  height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 18px 0;
+    margin: 0 auto;
 }
 
 .slider {
-  width: 800px;
+  width: 100%;
+  max-width: 800px; /* keep desktop max width */
   height: 420px;
   display: flex;
   justify-content: center;
@@ -40,6 +41,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
 }
 
 .slide h2 {
@@ -52,13 +54,14 @@
   text-shadow: 0 3px 10px rgba(0,0,0,0.5);
 }
 
+/* use percentage translate so positions scale with container */
 .slide.left {
-  transform: translateX(-260px) scale(0.8);
+  transform: translateX(-32%) scale(0.8);
   opacity: 0.5;
 }
 
 .slide.right {
-  transform: translateX(260px) scale(0.8);
+  transform: translateX(32%) scale(0.8);
   opacity: 0.5;
 }
 
@@ -69,17 +72,23 @@
 }
 
 .arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
   font-size: 45px;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   color: #0c335c;
   padding: 10px;
   transition: 0.3s ease;
 }
 
-.arrow:hover {
-  transform: scale(1.2);
-}
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
+
+.arrow:hover { transform: translateY(-50%) scale(1.2); }
 
 /* smooth animation improve */
 .slide.left, 
@@ -96,6 +105,79 @@
 @keyframes slideUp {
   0% { transform: scale(0.7); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+
+  .slider-container {
+    width: 100%;
+    padding: 25px 0;
+  }
+
+  .slider {
+    width: 100%;
+    height: 300px;
+    position: relative;
+  }
+
+  .slide {
+    width: 85%;
+    height: 240px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.7);
+    opacity: 0.3;
+  }
+
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* left slide */
+  .slide.left {
+    transform: translateX(calc(-50% - 120px)) scale(0.75); 
+    opacity: 0.5;
+  }
+
+  /* right slide */
+  .slide.right {
+    transform: translateX(calc(-50% + 120px)) scale(0.75);
+    opacity: 0.5;
+  }
+
+  /* active slide centered */
+  .slide.active {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    z-index: 20;
+  }
+
+  .arrow {
+    font-size: 32px;
+    padding: 5px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .slider {
+    height: 220px;
+  }
+
+  .slide {
+    height: 190px;
+    width: 90%;
+  }
+
+  .slide.left {
+    transform: translateX(calc(-50% - 90px)) scale(0.7);
+  }
+
+  .slide.right {
+    transform: translateX(calc(-50% + 90px)) scale(0.7);
+  }
 }
 
     </style>
