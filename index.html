@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+  background: #f7f7f7;
+  font-family: Arial;
+}
+
+.slider-container {
+  width: 100%;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.slider {
+  width: 800px;
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  width: 65%;
+  height: 380px;
+  border-radius: 20px;
+  overflow: hidden;
+  transform: scale(0.7);
+  opacity: 0.3;
+  transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.slide h2 {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 28px;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.slide.left {
+  transform: translateX(-260px) scale(0.8);
+  opacity: 0.5;
+}
+
+.slide.right {
+  transform: translateX(260px) scale(0.8);
+  opacity: 0.5;
+}
+
+.slide.active {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 20;
+}
+
+.arrow {
+  font-size: 45px;
+  cursor: pointer;
+  user-select: none;
+  color: #0c335c;
+  padding: 10px;
+  transition: 0.3s ease;
+}
+
+.arrow:hover {
+  transform: scale(1.2);
+}
+
+/* smooth animation improve */
+.slide.left, 
+.slide.right, 
+.slide.active {
+  transition: transform .7s ease, opacity .7s ease;
+}
+
+/* smooth animation */
+.slide.enter {
+  animation: none;
+}
+
+@keyframes slideUp {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+  <div class="arrow left" id="prev">&#10094;</div>
+
+  <div class="slider">
+    <div class="slide active">
+      <img src="1.webp" alt="">
+      <!-- <h2>Shanghai Government Scholarship</h2> -->
+    </div>
+
+    <div class="slide">
+      <img src="2.webp" alt="">
+      <!-- <h2>Full Free Scholarship</h2> -->
+    </div>
+
+    <div class="slide">
+      <img src="3.webp" alt="">
+      <!-- <h2>International Student Program</h2> -->
+    </div>
+    <div class="slide">
+      <img src="4.webp" alt="">
+      <!-- <h2>International Student Program</h2> -->
+    </div>
+    <div class="slide">
+      <img src="5.webp" alt="">
+      <!-- <h2>International Student Program</h2> -->
+    </div>
+    <div class="slide">
+      <img src="6.webp" alt="">
+      <!-- <h2>International Student Program</h2> -->
+    </div>
+    <div class="slide">
+      <img src="7.webp" alt="">
+      <!-- <h2>International Student Program</h2> -->
+    </div>
+    
+  </div>
+
+  <div class="arrow right" id="next">&#10095;</div>
+</div>
+
+<script>
+   const slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function updateSlides() {
+  slides.forEach((slide, i) => {
+    slide.classList.remove("active", "left", "right");
+
+    if (i === index) slide.classList.add("active");
+    else if (i === (index - 1 + slides.length) % slides.length)
+      slide.classList.add("left");
+    else if (i === (index + 1) % slides.length)
+      slide.classList.add("right");
+  });
+}
+
+// NEXT Button Click
+document.getElementById("next").addEventListener("click", () => {
+  index = (index + 1) % slides.length;
+  updateSlides();
+});
+
+// PREV Button Click
+document.getElementById("prev").addEventListener("click", () => {
+  index = (index - 1 + slides.length) % slides.length;
+  updateSlides();
+});
+
+// AUTO SCROLL
+setInterval(() => {
+  document.getElementById("next").click();
+}, 4000);
+
+updateSlides();
+
+
+// ⭐⭐⭐ DRAG + SWIPE CONTROL ⭐⭐⭐
+let startX = 0;
+let endX = 0;
+
+const sliderBox = document.querySelector(".slider");
+
+// Mouse drag
+sliderBox.addEventListener("mousedown", (e) => {
+  startX = e.clientX;
+});
+
+sliderBox.addEventListener("mouseup", (e) => {
+  endX = e.clientX;
+  handleSwipe();
+});
+
+// Touch drag
+sliderBox.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+sliderBox.addEventListener("touchend", (e) => {
+  endX = e.changedTouches[0].clientX;
+  handleSwipe();
+});
+
+// Swipe logic
+function handleSwipe() {
+  const diff = startX - endX;
+
+  if (Math.abs(diff) > 70) {
+    if (diff > 0) {
+      document.getElementById("next").click();   // left swipe → next
+    } else {
+      document.getElementById("prev").click();   // right swipe → prev
+    }
+  }
+}
+</script>
+</body>
+</html>
